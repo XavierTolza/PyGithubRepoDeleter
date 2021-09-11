@@ -1,6 +1,6 @@
 # About
 This is just a very simple CLI to bulk delete github repositories
-
+![img](./img/demo.jpg)
 # Usage
 Create your github token at this address: [https://github.com/settings/tokens](https://github.com/settings/tokens)
 Make sure you have the `repo` and `delete_repo` authorizations. 
