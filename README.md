@@ -9,6 +9,8 @@ Install using
 ```
 pip install git+https://github.com/XavierTolza/PyGithubRepoDeleter.git
 ```
+or
+`pip install pygithubrepodeleter`
 
 Then start the CLI as such:
 ```
