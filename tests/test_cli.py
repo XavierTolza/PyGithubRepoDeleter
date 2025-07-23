@@ -35,8 +35,10 @@ class TestCLI:
     def test_module_execution(self):
         """Test that the module can be executed with python -m"""
         try:
-            cmd = [sys.executable, "-m", "github_repo_deleter.repo_deleter", "--help"]
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+            cmd = [sys.executable, "-m",
+                   "github_repo_deleter.repo_deleter", "--help"]
+            result = subprocess.run(cmd, capture_output=True,
+                                    text=True, timeout=10)
             # Should either succeed or fail gracefully
             assert result.returncode in [0, 1, 2], (
                 f"Module execution failed with unexpected return code: "
@@ -58,8 +60,10 @@ class TestCLI:
     def test_help_message_content(self):
         """Test that help message contains expected content"""
         try:
-            cmd = [sys.executable, "-m", "github_repo_deleter.repo_deleter", "--help"]
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+            cmd = [sys.executable, "-m",
+                   "github_repo_deleter.repo_deleter", "--help"]
+            result = subprocess.run(cmd, capture_output=True,
+                                    text=True, timeout=10)
 
             help_output = result.stdout + result.stderr
 
@@ -69,9 +73,10 @@ class TestCLI:
         except subprocess.TimeoutExpired:
             pytest.skip("Help command timed out")
 
-    @patch("github_repo_deleter.repo_deleter.prompt")
+    @patch("github_repo_deleter.repo_deleter.inquirer.prompt")
     @patch("github_repo_deleter.repo_deleter.Github")
-    def test_main_function_execution(self, mock_github_class, mock_prompt):
+    def test_main_function_execution(self, mock_github_class,
+                                     mock_inquirer_prompt):
         """Test that main function runs without errors in normal flow"""
         # Mock the GitHub client
         mock_github = MagicMock()
@@ -82,7 +87,7 @@ class TestCLI:
         mock_user.get_repos.return_value = []
 
         # Mock prompts to avoid interactive input
-        mock_prompt.side_effect = [
+        mock_inquirer_prompt.side_effect = [
             {"token": "fake_token"},  # Token prompt
             {"repos": []},  # Repo selection prompt
         ]
@@ -123,7 +128,8 @@ class TestErrorHandling:
 
     def test_empty_token_handling(self):
         """Test behavior with empty token"""
-        with patch("github_repo_deleter.repo_deleter.prompt") as mock_prompt:
+        mock_path = "github_repo_deleter.repo_deleter.inquirer.prompt"
+        with patch(mock_path) as mock_prompt:
             with patch.dict(os.environ, {}, clear=True):
                 with patch("sys.argv", ["remove_github_repos"]):
                     # Mock prompt to provide token after empty attempts
